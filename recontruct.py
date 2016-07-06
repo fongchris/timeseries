@@ -1,6 +1,8 @@
+#hihi from bod
 from statistics import mean, pstdev
 import itertools
 import timeit
+
 
 #print(pstdev([100, 120, 140, 135, 169, 300]))
 
