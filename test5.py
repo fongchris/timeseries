@@ -175,11 +175,11 @@ def main(stock_list,window_size, number_of_bands, max_value, norm, merge_factor)
 
 def test1():
 	print ('*****  Test 1  *****')
-	for n in [5]: #n=3 5 7
-		for k in [10]: # k=10 100 1000
+	for n in [3,5,7]: #n=3 5 7
+		for k in [10,100,1000]: # k=10 100 1000
 			window_size = n #n=3 5 7
 			number_of_bands = k # k=10 100 1000
-			max_value = 2000
+			max_value = 1500
 			stock_list = list(range(0,1168)) #481 #378 #569 #1428
 			main(stock_list,window_size, number_of_bands, max_value,0,0)
 
@@ -187,7 +187,7 @@ def test1():
 #============================================================
 def test2():
 	print ('*****  Test 2  *****')
-	for n in [5]: #n=3 5 7
+	for n in [3]: #n=3 5 7
 		for k in [10]: # k=10 100 1000
 			window_size = n #n=3 5 7
 			number_of_bands = k # k=10 100 1000
@@ -211,4 +211,4 @@ def test3():
 
 #============== NOW RUNNING ================
 
-#test1()
+test1()
