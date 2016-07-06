@@ -30,9 +30,9 @@ def simple_return(ts):
 			r = (x/last_x)-1
 			new_ts.append(r)
 			last_x = x
-	print(new_ts)
-	print(len(new_ts))
-	return new_ts
+	#print(new_ts)
+	#print(len(new_ts))
+	#return new_ts
 
 
 def simple_return_m (ts,factor):
@@ -42,8 +42,8 @@ def simple_return_m (ts,factor):
 		new_point = (ts[count+factor]/ts[count])-1
 		merged_ts.append(new_point)
 		count = count+factor
-	print(merged_ts)
-	print(len(merged_ts))
+	#print(merged_ts)
+	#print(len(merged_ts))
 	return merged_ts 
 #[1,5,20,60,120,240] [day,week,month,quater,half,year]
 
@@ -74,8 +74,8 @@ def find_max_min():
 
 def find_global_max_min():
 	stock_list = list(range(0,1168))
+	ts_aggregated = []	
 	for m in [1,5,20,60,120,240]:
-		ts_aggregated = []	
 		for stock_id in stock_list:
 			ts1 = simple_return_m(extract(stock_id),m)
 			ts_aggregated = ts_aggregated + ts1
