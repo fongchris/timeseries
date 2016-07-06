@@ -41,7 +41,7 @@ def find_max_min():
 		ts_aggregated = ts_aggregated + ts1
 	print(max(ts_aggregated))
 	print(min(ts_aggregated))
-find_max_min()
+#find_max_min()
 #1799.23  new 1469.56
 
 def convert(ts,window_size,number_of_bands,max_value):
@@ -175,8 +175,8 @@ def main(stock_list,window_size, number_of_bands, max_value, norm, merge_factor)
 
 def test1():
 	print ('*****  Test 1  *****')
-	for n in [3,5,7]: #n=3 5 7
-		for k in [10,100,1000]: # k=10 100 1000
+	for n in [7]: #n=3 5 7
+		for k in [1000]: # k=10 100 1000
 			window_size = n #n=3 5 7
 			number_of_bands = k # k=10 100 1000
 			max_value = 1500
@@ -211,4 +211,4 @@ def test3():
 
 #============== NOW RUNNING ================
 
-test1()
+#test1()
