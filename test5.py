@@ -139,8 +139,8 @@ def main(stock_list,window_size, number_of_bands, max_value, norm, merge_factor)
 		if norm != 0:
 			ts=normalise(ts)
 
-		if merge_factor != 0:
-			ts=merge(ts,merge_factor)
+		#if merge_factor != 0:
+		#	ts=merge(ts,merge_factor)
 
 		ls = convert(ts,window_size,number_of_bands,max_value)
 		#print ("Stock ID: %d" % stock_id)
@@ -232,7 +232,7 @@ def test3():
 
 #============== NOW RUNNING ================
 
-
+# this is for normalise 5*100
 def test4():
 	print ('*****  Test 4  *****')
 	for n in [5]: #n=3 5 7
@@ -240,11 +240,11 @@ def test4():
 			window_size = n #n=3 5 7
 			number_of_bands = k # k=10 100 1000
 			max_value = 100
-			stock_list = list(range(0,1168)) #1168
+			stock_list = list(range(150,180)) #1168
 			main(stock_list,window_size, number_of_bands, max_value,1,0)
 
 
-#test4()
+test4()
 
 
 def test_normalise_band():
@@ -261,5 +261,4 @@ def test_normalise_band():
 	print(max(agg_ts))
 	print(min(agg_ts))
 
-
-test_normalise_band()
+#ok

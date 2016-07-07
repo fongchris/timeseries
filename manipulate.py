@@ -18,6 +18,30 @@ def check_prob(a):
 #OK 
 
 
+def calculate_entropy (letter_prob):
+	prob_list=[x[1] for x in letter_prob]
+	#print(prob_list)
+	#print(sum(prob_list))
+	entropy = 0
+	for p in prob_list:
+		entropy = entropy - p*log(p,2)
+	return entropy
+
+
+def rebalance (alphabet):
+	prob_sum = 0
+	new_alphabet =[]
+	for i in alphabet:
+		prob_sum = prob_sum+i[1]
+
+	for i in alphabet:
+		a = (i[0],i[1]/prob_sum)
+		new_alphabet.append(a)
+	#print(new_alphabet)
+	return new_alphabet
+#rebalance([(1,0.1),(2,0.2),(3,0.2)])
+
+
 # x1<= C <= x2
 # y1<=C <=y2
 #http://stackoverflow.com/questions/3269434/whats-the-most-efficient-way-to-test-two-integer-ranges-for-overlap
@@ -39,7 +63,7 @@ def eliminate_max(alphabet,v):
 
 #eliminate_max(a,5)
 
-
+# ==================== maximum ============
 def loop_max(alphabet):
 	letters_number_list = []
 	for i in list(range(1,101)):
@@ -48,6 +72,29 @@ def loop_max(alphabet):
 		letters_number_list.append(letters_number)
 	print (letters_number_list)
 
+
+def loop_max2(alphabet):
+	count = 0
+	letters_number_list = []
+	entropy_list = []
+	for i in list(range(1,101)):
+		new_alphabet = eliminate_max(alphabet,i)
+		letters_number = len(new_alphabet)
+		letters_number_list.append(letters_number)
+
+
+		balanced_alphabet = rebalance(new_alphabet) 
+		entropy = calculate_entropy(balanced_alphabet)
+		entropy_list.append(entropy)
+		count = count+1
+		print(count/100)
+		
+	print (letters_number_list)
+	print (entropy_list)
+
+
+
+# ========================== minimum ===================
 
 
 def eliminate_min(alphabet,v):
@@ -62,6 +109,7 @@ def eliminate_min(alphabet,v):
 
 
 
+
 def loop_min(alphabet):
 	letters_number_list = []
 	for i in list(range(1,101)):
@@ -69,6 +117,31 @@ def loop_min(alphabet):
 		letters_number = len(new_alphabet)
 		letters_number_list.append(letters_number)
 	print (letters_number_list)
+
+
+
+def loop_min2(alphabet):
+	count = 0
+	letters_number_list = []
+	entropy_list = []
+	for i in list(range(1,101)):
+		new_alphabet = eliminate_min(alphabet,i)
+		letters_number = len(new_alphabet)
+		letters_number_list.append(letters_number)
+
+		balanced_alphabet = rebalance(new_alphabet) 
+		entropy = calculate_entropy(balanced_alphabet)
+		entropy_list.append(entropy)
+		count = count+1
+		print(count/100)
+
+	print (letters_number_list)
+	print (entropy_list)
+
+
+
+
+
 
 
 
@@ -94,6 +167,27 @@ def loop_mean(alphabet):
 	print (letters_number_list)
 
 
+def loop_mean2(alphabet):
+	count = 0
+	letters_number_list = []
+	entropy_list = []
+	for i in list(range(1,101)):
+		new_alphabet = eliminate_mean(alphabet,i)
+		letters_number = len(new_alphabet)
+		letters_number_list.append(letters_number)
+
+		balanced_alphabet = rebalance(new_alphabet) 
+		entropy = calculate_entropy(balanced_alphabet)
+		entropy_list.append(entropy)
+		count = count+1
+		print(count/100)
+
+	print (letters_number_list)
+	print (entropy_list)
+
+
+
+
 
 def eliminate_sd(alphabet,v):
 	new_alphabet = []
@@ -113,7 +207,95 @@ def loop_sd(alphabet):
 		new_alphabet = eliminate_sd(alphabet,i)
 		letters_number = len(new_alphabet)
 		letters_number_list.append(letters_number)
-		print('.',end="",flush=True)
 	print (letters_number_list)
 
-#loop_sd(a)
+def loop_sd2(alphabet):
+	print("========= sd test ==========")
+	start = timeit.default_timer()
+	count = 0
+	letters_number_list = []
+	entropy_list = []
+	for i in list(range(1,101)):
+		new_alphabet = eliminate_sd(alphabet,i)
+		letters_number = len(new_alphabet)
+		letters_number_list.append(letters_number)
+
+		balanced_alphabet = rebalance(new_alphabet) 
+		entropy = calculate_entropy(balanced_alphabet)
+		entropy_list.append(entropy)
+		count = count+1
+		print(count)
+
+	stop  = timeit.default_timer()
+	time = (stop - start)
+	print (letters_number_list)
+	print (entropy_list)
+	print("========= sd test ==========")
+	print('Running Time (s): %f' %time)
+
+
+
+
+#=================== doubles ==============================
+
+
+
+def loop_min_max(alphabet):
+	print("========== min max test==========")
+	count = 0
+	letters_number_list = []
+	entropy_list = []
+
+	for i in list(range(1,101)): # this i min
+		alphabet1 = eliminate_min(alphabet,i)
+		for j in list(range(1,101)): # this is max
+			alphabet2 = eliminate_max(alphabet1,j)
+
+			letters_number = len(alphabet2)
+			letters_number_list.append((i,j,letters_number))
+
+			balanced_alphabet = rebalance(alphabet2) 
+			entropy = calculate_entropy(balanced_alphabet)
+			entropy_list.append((i,j,entropy))
+
+			count = count+1
+			print(count)
+	print("========== min max test==========")
+	print (letters_number_list)
+	print (entropy_list)
+
+
+#loop_min_max(a)
+
+
+
+def loop_sd_mean(alphabet):
+	print("======== sd-mean test===========")
+	start = timeit.default_timer()
+	count = 0
+	letters_number_list = []
+	entropy_list = []
+
+	for i in list(range(1,101)): # this is  sd 
+		alphabet1 = eliminate_sd(alphabet,i)
+		for j in list(range(1,101)): # this is mean
+			alphabet2 = eliminate_mean(alphabet1,j)
+			letters_number = len(alphabet2)
+			letters_number_list.append((i,j,letters_number))
+
+			balanced_alphabet = rebalance(alphabet2) 
+			entropy = calculate_entropy(balanced_alphabet)
+			entropy_list.append((i,j,entropy))
+
+			count = count+1
+			print(count)
+
+
+	stop  = timeit.default_timer()
+	time = (stop - start)
+	print (letters_number_list)
+	print (entropy_list)
+	print("======== sd-mean test===========")
+	print('Running Time (s): %f' %time)
+
+
