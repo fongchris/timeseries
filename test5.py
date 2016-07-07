@@ -10,6 +10,9 @@ import csv
 import timeit
 
 
+
+
+
 def extract(number):
 	ts = []
 	with open('1500comma.csv', newline='') as csvfile:
@@ -19,6 +22,19 @@ def extract(number):
 	del ts[0]
 	ts=list(map(float, ts))
 	return ts
+
+
+
+
+def calculate_band (raw_value, max_value, k):
+	increment = max_value/k
+	if raw_value == max_value:
+		band = k
+	else:
+		band = int(raw_value//increment+1)
+	return band
+
+
 
 def find_data_size():
 	lst = []
@@ -46,9 +62,9 @@ def find_max_min():
 
 def convert(ts,window_size,number_of_bands,max_value):
 
-	increment = (max_value)/(number_of_bands)
-	ts2 = [int ((x)//increment+1) for  x in ts]
-
+	#increment = (max_value)/(number_of_bands)
+	#ts2 = [int ((x)//increment+1) for  x in ts]
+	ts2 =[calculate_band(x,max_value,number_of_bands) for x in ts]
 	ts3=[]
 	count = 0 + window_size
 	while (count <= len(ts2)):
@@ -92,8 +108,12 @@ def normalise(ts):
 	ts_min = min(ts)
 	ts_normalised = []
 	for a in ts:
-		b = 1000*(a-ts_min)/(ts_max-ts_min)
-		ts_normalised.append(b)
+		if a==ts_max:
+			b = 100
+			ts_normalised.append(b)
+		else:
+			b = 100*(a-ts_min)/(ts_max-ts_min)
+			ts_normalised.append(b)
 	return ts_normalised
 
 
@@ -153,7 +173,7 @@ def main(stock_list,window_size, number_of_bands, max_value, norm, merge_factor)
 	if merge_factor != 0:
 		print ('*****  Merging factor: %d  *****' %merge_factor)
 
-	print('-----------  n = %d, k = %d, Max = %d, Increment = %d -------------' % (window_size, number_of_bands, max_value, increment))
+	print('-----------  n = %d, k = %d, Max = %d, Increment = %f -------------' % (window_size, number_of_bands, max_value, increment))
 	#print('Increment: %d' %increment)
 	#print('Probability Threshold: %d' %probability_threshold)
 	print('\n')
@@ -162,13 +182,14 @@ def main(stock_list,window_size, number_of_bands, max_value, norm, merge_factor)
 	#print(ordered_letter_prob)
 	print('Running Time (s): %f' %time)
 	print ("Entropy: %f" %entropy) 
-	#print('Number of Letters: %f' %(k**n))
+	print('Number of Letters: %d' %(int(number_of_bands**window_size)))
 	print ('Number of Possible Letters : %d' %number_of_letters)
 	print ('Sample size: %d' %data_size)
 	#print ("***************** END OF MAIN ******************")
 	print('Top 5:')
 	print(ordered_letter_prob[0:5])
-	#print(letter_prob)
+	print('Alphabet:')
+	print(letter_prob)
 
 #========= test =============================
 #k^n
@@ -192,7 +213,7 @@ def test2():
 			window_size = n #n=3 5 7
 			number_of_bands = k # k=10 100 1000
 			max_value = 1001
-			stock_list = list(range(0,1168)) #481 #378 #569 #1428
+			stock_list = list(range(0,10)) #1168
 			main(stock_list,window_size, number_of_bands, max_value,1,0)
 
 #test2()
@@ -211,4 +232,34 @@ def test3():
 
 #============== NOW RUNNING ================
 
-#test1()
+
+def test4():
+	print ('*****  Test 4  *****')
+	for n in [5]: #n=3 5 7
+		for k in [100]: # k=10 100 1000
+			window_size = n #n=3 5 7
+			number_of_bands = k # k=10 100 1000
+			max_value = 100
+			stock_list = list(range(0,1168)) #1168
+			main(stock_list,window_size, number_of_bands, max_value,1,0)
+
+
+#test4()
+
+
+def test_normalise_band():
+	agg_ts =[]
+	stock_list = list(range(0,1168)) #1168
+	for i in stock_list:
+		ts = normalise(extract(i))
+		ts2 =[calculate_band(x,100,100) for x in ts]
+		agg_ts=agg_ts+ts2
+		print('.',end="",flush=True)
+
+	print(agg_ts)
+	print(len(agg_ts))
+	print(max(agg_ts))
+	print(min(agg_ts))
+
+
+test_normalise_band()
