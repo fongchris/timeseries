@@ -1,7 +1,7 @@
 
 #exec(open("./data_alphabet.py").read())
 
-#exec(open("./manipulate.py").read())
+#exec(open("./main_info_gain.py").read())
 
 from statistics import mean, pstdev
 from math import log
@@ -37,9 +37,11 @@ def rebalance (alphabet):
 	for i in alphabet:
 		a = (i[0],i[1]/prob_sum)
 		new_alphabet.append(a)
+	#print(prob_sum)
 	#print(new_alphabet)
 	return new_alphabet
-#rebalance([(1,0.1),(2,0.2),(3,0.2)])
+
+
 
 
 # x1<= C <= x2
@@ -77,12 +79,15 @@ def loop_max2(alphabet):
 	count = 0
 	letters_number_list = []
 	entropy_list = []
+	probability_reduction_list = []
 	for i in list(range(1,101)):
 		new_alphabet = eliminate_max(alphabet,i)
 		letters_number = len(new_alphabet)
 		letters_number_list.append(letters_number)
 
+		probability_reduction = sum([i[1] for i in new_alphabet])
 
+		probability_reduction_list.append (probability_reduction)
 		balanced_alphabet = rebalance(new_alphabet) 
 		entropy = calculate_entropy(balanced_alphabet)
 		entropy_list.append(entropy)
@@ -91,7 +96,7 @@ def loop_max2(alphabet):
 		
 	print (letters_number_list)
 	print (entropy_list)
-
+	print (probability_reduction_list)
 
 
 # ========================== minimum ===================
@@ -199,6 +204,7 @@ def eliminate_sd(alphabet,v):
 			new_alphabet.append(i)
 	#print(new_alphabet)
 	return (new_alphabet)
+
 
 
 
