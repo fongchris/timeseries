@@ -189,6 +189,7 @@ def main(stock_list,window_size, number_of_bands, max_value):
 	print ('Sample size: %d' %data_size)
 
 
+print('----  clean version ----')
 stock_list = list(range(0,1168)) #1168
 main(stock_list,5, 100, 100)
 

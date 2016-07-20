@@ -76,7 +76,7 @@ def rebalance (probs):
 	return new_alphabet
 
 
-def feature_dist(f,falphabet):
+def feature_pdf(falphabet,f):
 	prob_list = []
 	done = 0
 	for i in list(range(1,101)):
@@ -90,11 +90,46 @@ def feature_dist(f,falphabet):
 		sys.stdout.write("%f" % (done/100))
 		sys.stdout.flush()
 
-	print ('\n')	
+	print ('\n')
+	print ("==== Feature: %d PDF =======" %f) 
 	print (prob_list)
 
 
 
+def feature_jpdf(falphabet,f1,f2):
+	jpdf = []
+
+
+	comb = []
+	for item in falphabet:
+		a = (item[f1],item[f2])
+		comb.append(a)
+
+	unique_comb = set(comb)
+
+	unique_size = len(unique_comb)
+	done =0
+
+
+	for j in unique_comb:
+		prob = 0
+		for k in falphabet:
+			if j[0]==k[f1] and j[1]==k[f2]:
+				prob = prob + k[0]
+		jpdf.append((j,prob))
+		done = done+1
+		sys.stdout.write('\r')
+		sys.stdout.write("%f" % (done/unique_size))
+		sys.stdout.flush()
+
+	print('\n')
+	#print(jpdf)
+
+	print ("==== Feature: %d JPDF =======" %f1) 
+	print ("==== Feature: %d JPDF =======" %f2) 
+	print ("Unique Size: %d" %unique_size)
+
+	
 
 
 
@@ -108,15 +143,24 @@ def run_falphabet():
   		pickle.dump(b, handle2)
 
 
-def run_fdist():
+def run_pdf():
 	with open('./data/falphabet1.pickle', 'rb') as handle:
   		falphabet = pickle.load(handle)
 
-	feature_dist(6,falphabet)
+	for i in list(range(1,10)):
+		feature_pdf(falphabet,i)
+
+
+def run_jpdf():
+	with open('./data/falphabet1.pickle', 'rb') as handle:
+  		falphabet = pickle.load(handle)
+
+	feature_jpdf(falphabet,1,2)
 
 
 
 #run_falphabet()
-run_fdist()
+#run_single_pdf()
+run_jpdf()
 
 
